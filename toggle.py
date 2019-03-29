@@ -1,7 +1,10 @@
 import requests
 import base64
+import datetime
 import json
 
+yest = datetime.date.today()-datetime.timedelta(1)
+count = 0
 usertoken='ab2e05851aad100a29085e8939a349eb'
 string=usertoken+':api_token'
 headers={
@@ -15,5 +18,13 @@ if response.status_code!=200:
     quit()
 
 response=response.json()
-resp = json.dumps(response)
-print (resp)
+resps = json.loads(json.dumps(response))
+
+for resp in resps:
+    if resp['at'].split("T")[0] == str(datetime.date.today()-datetime.timedelta(1)):
+        count = count + 1
+
+if count > 1:
+    print ("Timeheet Updated")
+else:
+    print("Timesheet Not Updated")
